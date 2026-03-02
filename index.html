@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>minninono ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg,#ffb6f9,#c3b6ff,#b6f0ff);
+  text-align:center;
+  padding:20px;
+}
+h1{color:white;}
+input,button{
+  padding:10px;
+  margin:5px;
+  border-radius:10px;
+  border:none;
+}
+button{
+  background:#ff8ad6;
+  color:white;
+}
+.folder{
+  background:white;
+  padding:15px;
+  margin:10px;
+  border-radius:15px;
+  cursor:pointer;
+}
+.link{
+  background:#f2f2f2;
+  margin:5px;
+  padding:8px;
+  border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>✨ minninono ✨</h1>
+
+<h3>Add Folder</h3>
+<input id="folderName" placeholder="Folder Name">
+<button onclick="addFolder()">Add</button>
+
+<div id="folders"></div>
+
+<div id="linksSection" style="display:none;">
+<h3>Add Link</h3>
+<input id="linkName" placeholder="Item Name">
+<input id="linkURL" placeholder="Affiliate URL">
+<button onclick="addLink()">Add Link</button>
+<div id="links"></div>
+</div>
+
+<script>
+let folders=[];
+let selected=null;
+
+function addFolder(){
+  let name=document.getElementById("folderName").value;
+  if(!name)return;
+  folders.push({name:name,links:[]});
+  render();
+  document.getElementById("folderName").value="";
+}
+
+function render(){
+  let container=document.getElementById("folders");
+  container.innerHTML="";
+  folders.forEach((f,i)=>{
+    container.innerHTML+=
+    "<div class='folder' onclick='openFolder("+i+")'>"+f.name+"</div>";
+  });
+}
+
+function openFolder(i){
+  selected=i;
+  document.getElementById("linksSection").style.display="block";
+  renderLinks();
+}
+
+function addLink(){
+  let name=document.getElementById("linkName").value;
+  let url=document.getElementById("linkURL").value;
+  if(!name||!url)return;
+  folders[selected].links.push({name:name,url:url});
+  renderLinks();
+}
+
+function renderLinks(){
+  let div=document.getElementById("links");
+  div.innerHTML="";
+  folders[selected].links.forEach(l=>{
+    div.innerHTML+=
+    "<div class='link'><a href='"+l.url+"' target='_blank'>"+l.name+"</a></div>";
+  });
+}
+</script>
+
+</body>
+</html>
